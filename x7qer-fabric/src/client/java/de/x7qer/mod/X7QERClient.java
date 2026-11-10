@@ -14,7 +14,7 @@ public final class X7QERClient implements ClientModInitializer {
 
     @Override public void onInitializeClient() {
         openMenu = KeyBindingHelper.registerKeyBinding(new KeyMapping(
-                "key.x7qer.open", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_O, "category.x7qer"));
+                "key.x7qer.open", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_O, KeyMapping.Category.MISC));
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (openMenu.consumeClick()) client.setScreen(new PackEditorScreen());
         });
