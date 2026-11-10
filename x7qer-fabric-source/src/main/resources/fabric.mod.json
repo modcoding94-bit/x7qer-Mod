@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "id": "x7qer",
+  "version": "${version}",
+  "name": "x7qer Style",
+  "description": "Erstellt ein eigenes Resourcepack aus ausgewählten Kategorien verschiedener Packs.",
+  "environment": "client",
+  "entrypoints": { "client": ["de.x7qer.mod.X7QERClient"] },
+  "depends": {
+    "fabricloader": ">=0.16.0",
+    "minecraft": "~1.21.11",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}
