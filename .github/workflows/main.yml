@@ -1,0 +1,41 @@
+name: Build x7qer Mod
+
+on:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Quellcode laden
+        uses: actions/checkout@v4
+
+      - name: Java 25 einrichten
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+
+      - name: Mod bauen
+        shell: pwsh
+        run: |
+          $project = Get-ChildItem -Directory -Recurse | Where-Object {
+            (Test-Path (Join-Path $_.FullName 'build.gradle')) -and
+            (Test-Path (Join-Path $_.FullName 'src/client/java/de/x7qer/mod/X7QERClient.java'))
+          } | Select-Object -First 1
+
+          if (-not $project) { throw 'Projektdateien wurden nicht gefunden.' }
+
+          & (Join-Path $project.FullName 'gradlew.bat') -p $project.FullName build --no-daemon
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Mod-JAR bereitstellen
+        uses: actions/upload-artifact@v4
+        with:
+          name: x7qer-mod
+          path: '**/build/libs/x7qer-1.0.0.jar'
+          if-no-files-found: error
